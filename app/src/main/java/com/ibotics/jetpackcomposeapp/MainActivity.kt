@@ -2,6 +2,7 @@ package com.ibotics.jetpackcomposeapp
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -36,9 +37,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetpackcomposeAppTheme {
-                PreviewMethod()
+                ReComposable()
             }
         }
+    }
+}
+
+@Composable
+fun ReComposable() {
+    val state = remember {
+        mutableStateOf(0.0)
+    }
+    Log.d("Tag","Log during initial")
+    Button(onClick = {state.value=Math.random()}) {
+        Log.d("Tag","Log during composition & recomposition")
+        Text(text = state.value.toString())
     }
 }
 
@@ -48,7 +61,8 @@ fun PreviewMethod() {
     Text(
         text = "Hello",
         color = Color.White,
-        modifier = Modifier.clickable {  }
+        modifier = Modifier
+            .clickable { }
             .background(Color.Red)
             .size(200.dp)
             .padding(36.dp)
