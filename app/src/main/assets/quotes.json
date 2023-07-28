@@ -1,0 +1,34 @@
+[
+  {
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "author": "John Doe"
+  },
+  {
+    "text": "In varius justo ac massa pretium, a ultricies lorem rhoncus.",
+    "author": "Jane Smith"
+  },
+  {
+    "text": "Suspendisse potenti. Ut dapibus elit eu ante finibus tincidunt.",
+    "author": "Bob Johnson"
+  },
+  {
+    "text": "Praesent in sapien vel augue varius gravida eget ut turpis.",
+    "author": "Alice Williams"
+  },
+  {
+    "text": "Nulla facilisi. Mauris congue nunc vitae est fermentum fringilla.",
+    "author": "Michael Brown"
+  },
+  {
+    "text": "Quisque ullamcorper ipsum quis turpis dapibus, ut luctus elit tincidunt.",
+    "author": "Emily Davis"
+  },
+  {
+    "text": "Maecenas feugiat lorem a nisi tempus, ac luctus ex aliquet.",
+    "author": "David Lee"
+  },
+  {
+    "text": "Fusce at libero in nulla bibendum euismod.",
+    "author": "Sarah Miller"
+  }
+]

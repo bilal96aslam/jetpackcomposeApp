@@ -2,6 +2,7 @@ package com.ibotics.jetpackcomposeapp
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,65 +31,51 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ibotics.jetpackcomposeapp.screens.QuoteListScreen
+import com.ibotics.jetpackcomposeapp.screens.QuotesDetail
 import com.ibotics.jetpackcomposeapp.ui.theme.JetpackcomposeAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CoroutineScope(Dispatchers.IO).launch {
+            DataManager.loadAssetsFromFile(applicationContext)
+        }
         setContent {
-            JetpackcomposeAppTheme {
-                ReComposable()
+            App()
+        }
+    }
+}
+
+
+@Composable
+fun App() {
+    if (DataManager.isDataLoaded.value) {
+        if (DataManager.currentPage.value == Pages.LISTING) {
+            QuoteListScreen(data = DataManager.data) {
+                DataManager.switchPages(it)
             }
+        } else {
+            DataManager.currentQuote?.let { QuotesDetail(quote = it) }
+        }
+    } else {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(
+                text = "Loading...",
+                style = MaterialTheme.typography.h6
+            )
         }
     }
 }
 
-@Composable
-fun ReComposable() {
-    val state = remember {
-        mutableStateOf(0.0)
-    }
-    Log.d("Tag","Log during initial")
-    Button(onClick = {state.value=Math.random()}) {
-        Log.d("Tag","Log during composition & recomposition")
-        Text(text = state.value.toString())
-    }
+enum class Pages {
+    LISTING,
+    DETAIL
 }
 
-@Preview(showBackground = true, widthDp = 300, heightDp = 500)
-@Composable
-fun PreviewMethod() {
-    Text(
-        text = "Hello",
-        color = Color.White,
-        modifier = Modifier
-            .clickable { }
-            .background(Color.Red)
-            .size(200.dp)
-            .padding(36.dp)
-            .border(4.dp, color = Color.White)
-            .clip(CircleShape)
-            .background(Color.Green)
-    )
-}
-
-@Composable
-fun PreviewMethod2() {
-    Row(
-       verticalAlignment = Alignment.CenterVertically
-    ) {
-        //work same as frame layout
-        Box{
-            Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "",
-            Modifier.size(50.dp))
-            Image(painter = painterResource(id = R.drawable.ic_launcher_foreground), contentDescription = "",
-            Modifier.size(30.dp))
-        }
-        Column() {
-            Text(text = "John Doe", fontSize = 22.sp, color = Color.Black, fontWeight = FontWeight.Bold)
-            Text(text = "Software Developer", fontSize = 16.sp, color = Color.Gray,
-                fontWeight = FontWeight.Thin)
-        }
-    }
-
-}
